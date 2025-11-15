@@ -31,13 +31,33 @@ export class RuleLoader implements OnModuleInit {
 
         // based on your resource, implement the logic to load rules
         // for MVP, we are using hardcoded JSON file
-
+ 
         const RULES_FILE_PATH = this.config.getOrThrow<string>('RULES_FILE_PATH');
         const filePath: string = path.join(RULES_FILE_PATH);
         const raw = await fs.promises.readFile(filePath, 'utf8'); 
-        const rules: RuleDefinition[] = JSON.parse(raw);
-        return rules;
+        const jsonParsedRules = JSON.parse(raw);
+        
+        if (!Array.isArray(jsonParsedRules)) {
+            throw new Error('Invalid rules format in resource');
+        }
 
+        let ruleDefenitions: RuleDefinition[] = [];
+        for (const r of jsonParsedRules) {
+            if (!r.type || r.priority === undefined || r.active === undefined) {
+                throw new Error(`Missing required fields in rule: ${JSON.stringify(r)}`);
+            }
+
+            const def: RuleDefinition = {
+                id: r.id,
+                type: r.type,
+                priority: r.priority,
+                active: r.active,
+                params: r.params || {},
+            };
+            ruleDefenitions.push(def);
+        }
+
+        return ruleDefenitions;
     }
 
     private async filterAndSortRules(rules: RuleDefinition[]): Promise<RuleDefinition[]> {
