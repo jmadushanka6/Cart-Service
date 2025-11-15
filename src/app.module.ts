@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { CartModule } from './cart/cart.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
-  imports: [CartModule],
+  imports: [ConfigModule.forRoot(), CartModule],
   controllers: [],
   providers: [],
 })

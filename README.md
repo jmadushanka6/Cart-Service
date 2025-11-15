@@ -4,6 +4,7 @@ We are going to use Chain of Responsibility Pattern for the Rule Engine
 
 Assumed quantitiy is always an int, as we are not goingto implement name and category validation for MVP
 
+For this level, the rules are loaded at startup
 
 Future - 
 
