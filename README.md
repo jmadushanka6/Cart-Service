@@ -77,6 +77,20 @@ active
     true → rule executes
     false → rule is skipped
 
+params -
+     conditions  - <array of conditions>
+                {
+                    field: 'category' | 'name' | 'price';
+                    operator: 'EQUALS' | 'GT' | 'GTE' | 'LT' | 'LTE';
+                    value: string | number;
+                }
+
+
+    "action": {
+                "discountPercent  | discountPercent": number (USE one of this)
+              }
+    
+    any other param u need for your rule
 
 
 Environment Variables
