@@ -22,12 +22,6 @@ Rules are loaded during application initialization and cached in memory for all 
 ### Chain of Responsibility
 Rules run sequentially by priority. Each rule mutates an `EngineContext` and passes it to the next rule.
 
-### SOLID Architecture
-- SRP: Each rule does exactly one thing  
-- OCP: New rules can be added without modifying the engine  
-- ISP: All rules implement the same interface  
-- DIP: The engine depends only on abstractions  
-
 ---
 
 ## rules.json Structure
