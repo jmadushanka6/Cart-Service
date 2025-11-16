@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit, ServiceUnavailableException } from '@nestjs/c
 import { EngineContext } from '../dto/engine.dto';
 import { BaseRule } from './base.rule';
 import { RuleRegistry } from '../cart.engine/rule.registry';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class BulkDiscountRule implements BaseRule, OnModuleInit {
@@ -28,8 +29,12 @@ export class BulkDiscountRule implements BaseRule, OnModuleInit {
     }
 
     if (ctx.subtotal > minimumPrice) {
-      ctx.totalDiscount = ctx.totalDiscount + discountAmount;
-      ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalDiscount; 
+      // ctx.totalDiscount = ctx.totalDiscount + discountAmount;
+      // ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalDiscount; 
+
+      ctx.totalDiscount = Number( Decimal(ctx.totalDiscount).plus(Decimal(discountAmount)) );
+      ctx.totalAfterDiscounts = Number(Decimal(ctx.subtotal).minus(Decimal(ctx.totalDiscount)));
+
     }
 
     return ctx;

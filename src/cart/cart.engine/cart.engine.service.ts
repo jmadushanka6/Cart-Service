@@ -3,6 +3,7 @@ import { RuleLoader } from './rule.loader';
 import { RuleRegistry } from './rule.registry';
 import { CartRequest, CartResponse } from '../dto/cart.dto';
 import { EngineContext } from '../dto/engine.dto';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class CartEngineService {
@@ -12,7 +13,7 @@ export class CartEngineService {
 
     async calculateCart(cart: CartRequest): Promise<any> {
 
-        const subtotal: number = cart.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+        const subtotal:number = cart.items.reduce((sum, i) => Decimal(sum).plus(Decimal(i.price).mul(Decimal(i.quantity))).toNumber(), 0);
 
         let context: EngineContext = {
             items: cart.items,
