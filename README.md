@@ -9,6 +9,7 @@ For this level, the rules are loaded at startup
 Future - 
 
 add name and cateogry validation
+Create rule base validation
 
 ## Installation
 
