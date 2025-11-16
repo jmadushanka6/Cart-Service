@@ -79,6 +79,17 @@ let hybridRules: RuleDefinition[] = [
     expect(service).toBeDefined();
   });
 
+  it('handles empty cart', async () => {
+    mockRuleLoader.getRules.mockReturnValue(hybridRules);
+
+    const result = await service.calculateCart({ items: [] });
+
+    expect(result.subtotal).toBe(0);
+    expect(result.discountsApplied).toBe(0); 
+    expect(result.vatAmount).toBe(0);
+    expect(result.totalPayable).toBe(0);
+  });
+
   it('applies rules in order and calculate correct values', async () => {
     mockRuleLoader.getRules.mockReturnValue(hybridRules);
 
