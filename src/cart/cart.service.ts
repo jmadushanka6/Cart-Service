@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CartItem, CartResponse } from './dto/cart.dto';
+import { CartItem, CartRequest, CartResponse } from './dto/cart.dto';
+import { CartEngineService } from './cart.engine/cart.engine.service';
 
 @Injectable()
 export class CartService {
 
-    async calculate(cartItems:CartItem[]): Promise<CartResponse> {
+    constructor(private readonly CartEngine: CartEngineService) {}
 
-        return {
-            subtotal: 0,
-            discountsApplied: 0,
-            totalAfterDiscounts: 0,
-            vatAmount: 0,
-            totalPayable: 0,
-        };
+    async calculate(cartItems:CartRequest): Promise<CartResponse> {
+
+        return this.CartEngine.calculateCart(cartItems);
     }
 }
