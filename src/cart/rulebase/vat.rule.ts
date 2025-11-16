@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { EngineContext } from "../dto/engine.dto";
 import { BaseRule } from "./base.rule";
 import { RuleRegistry } from "../cart.engine/rule.registry";
+import { Decimal } from "decimal.js";
 
 @Injectable()
 export class VatRule implements BaseRule, OnModuleInit {
@@ -18,8 +19,11 @@ export class VatRule implements BaseRule, OnModuleInit {
     apply(ctx: EngineContext, params?: Record<string, any>): EngineContext {
         const discountPercent = params?.discountPercent ?? 0;
 
-        ctx.vatAmount = ctx.totalAfterDiscounts * (discountPercent / 100);
-        ctx.totalPayable = ctx.totalAfterDiscounts + ctx.vatAmount;
+        // ctx.vatAmount = ctx.totalAfterDiscounts * (discountPercent / 100);
+        // ctx.totalPayable = ctx.totalAfterDiscounts + ctx.vatAmount;
+
+        ctx.vatAmount = Number(Decimal(ctx.totalAfterDiscounts).times(Decimal(discountPercent).dividedBy(100)));
+        ctx.totalPayable = Number(Decimal(ctx.totalAfterDiscounts).plus(Decimal(ctx.vatAmount)));
         return ctx;
     }
 }
