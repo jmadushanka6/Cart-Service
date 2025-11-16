@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotAcceptableException, OnModuleInit, ServiceUnavailableException } from '@nestjs/common';
 import { RuleLoader } from './rule.loader';
 import { RuleRegistry } from './rule.registry';
 import { CartRequest, CartResponse } from '../dto/cart.dto';
@@ -27,8 +27,7 @@ export class CartEngineService {
         for (const rule of rules) {
             const handler = this.ruleRegistry.getRule(rule.type);
             if (!handler) {
-                continue;
-                //throw new NotAcceptableException(`rule handler not found for type ${rule.type}`);
+                throw new ServiceUnavailableException(`rule handler not found for type ${rule.type}`);
             }
             context = handler.apply(context, rule.params); 
         }  
