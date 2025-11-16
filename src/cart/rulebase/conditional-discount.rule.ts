@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, ServiceUnavailableException } from '@nestjs/common';
 import { EngineContext } from '../dto/engine.dto';
 import { BaseRule } from './base.rule';
 import { RuleRegistry } from '../cart.engine/rule.registry';
@@ -6,7 +6,7 @@ import { RuleRegistry } from '../cart.engine/rule.registry';
 interface Condition {
     field: 'category' | 'name' | 'price';
     operator: 'EQUALS' | 'GT' | 'GTE' | 'LT' | 'LTE';
-    value: any;
+    value: string | number;
 }
 
 @Injectable()
@@ -30,7 +30,11 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
             case 'GTE': return val >= cond.value;
             case 'LT': return val < cond.value;
             case 'LTE': return val <= cond.value;
-            default: return false; 
+            default: {
+                // TODO: send a warning to Admin
+                console.error(`No valid discount conditions in rule engine for the type: ${this.type}`);
+                throw new ServiceUnavailableException('Service temporarily unavailable, please try later');
+            }; 
         }
     }
 
@@ -38,8 +42,8 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
         const conditions: Condition[] = params?.conditions ?? [];
         if (conditions.length === 0) {
             // TODO: send a warning to Admin
-            console.error(`No valid discount conditions in params for the type: ${this.type}`);
-            return ctx;
+            console.error(`No valid discount conditions in rule engine for the type: ${this.type}`);
+            throw new ServiceUnavailableException('Service temporarily unavailable, please try later');
         }
 
         const discountPercent = params?.action?.discountPercent ?? 0;
@@ -56,12 +60,13 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
                 } else {
                     // TODO: send a warning to Admin
                     console.error(`No valid discount action found for the type: ${this.type}`);
-                    continue;
+                    throw new ServiceUnavailableException('Service temporarily unavailable, please try later');
                 }
             }
         }
         ctx.totalDiscount += discount;
-        ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalAfterDiscounts;
+        ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalDiscount;
+        ctx.totalPayable = ctx.totalAfterDiscounts ;
         return ctx;
     }
 }

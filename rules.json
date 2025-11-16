@@ -1,0 +1,39 @@
+[
+    {
+        "id": "B",
+        "type": "conditional_discount",
+        "priority": 0,
+        "params": {
+            "conditions": [
+                {
+                    "field": "category",
+                    "operator": "EQUALS",
+                    "value": "electronics"
+                }
+            ],
+            "action": {
+                "discountPercent": 5
+            }
+        },
+        "active": true
+    },
+    {
+        "id": "C",
+        "type": "bulk_discount",
+        "priority": 101,
+        "params": {
+            "minPrice": 50,
+            "totalDiscount": 10
+        },
+        "active": true
+    },
+    {
+        "id": "D",
+        "type": "vat",
+        "priority": 1001,
+        "params": {
+            "rate": 0.32
+        },
+        "active": true
+    }
+]

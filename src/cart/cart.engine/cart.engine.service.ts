@@ -33,6 +33,7 @@ export class CartEngineService {
         }  
 
         return ({
+            subtotal: context.subtotal,
             discountsApplied: context.totalDiscount,
             totalAfterDiscounts: context.totalAfterDiscounts,
             vatAmount: context.vatAmount,
