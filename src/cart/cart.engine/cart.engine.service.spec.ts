@@ -101,9 +101,9 @@ let hybridRules: RuleDefinition[] = [
     });
 
     expect(result.subtotal).toBe(1020);
-    expect(result.discountsApplied).toBe(60); // 51 (5% of 1000) + 10 
-    expect(result.vatAmount).toBeCloseTo(192); // 20% of (1020 - 61)
-    expect(result.totalPayable).toBeCloseTo(1152); // 1020 - 61 + 192
+    expect(result.discountsApplied).toBe(60); // 60 (5% of 1000) + 10 
+    expect(result.vatAmount).toBeCloseTo(192); // 20% of (1020 - 60)
+    expect(result.totalPayable).toBeCloseTo(1152); // 1020 - 60 + 192
   });
 
   it('trigger bulk discount', async () => {
@@ -133,7 +133,7 @@ let hybridRules: RuleDefinition[] = [
     });
 
     expect(result.subtotal).toBe(25);
-    expect(result.discountsApplied).toBeCloseTo(0.);
+    expect(result.discountsApplied).toBeCloseTo(0);
     expect(result.totalAfterDiscounts).toBeCloseTo(25);
     expect(result.vatAmount).toBeCloseTo(5);
     expect(result.totalPayable).toBeCloseTo(30);
