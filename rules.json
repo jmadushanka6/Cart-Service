@@ -23,7 +23,7 @@
         "priority": 101,
         "params": {
             "minPrice": 50,
-            "totalDiscount": 10
+            "discountAmount": 10
         },
         "active": true
     },
@@ -32,7 +32,7 @@
         "type": "vat",
         "priority": 1001,
         "params": {
-            "rate": 0.32
+            "discountPercent": 20
         },
         "active": true
     }
