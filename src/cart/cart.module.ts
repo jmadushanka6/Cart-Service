@@ -5,10 +5,11 @@ import { CartEngineService } from './cart.engine/cart.engine.service';
 import { RuleLoader } from './cart.engine/rule.loader';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RuleRegistry } from './cart.engine/rule.registry';
+import { ConditionalDiscountRule } from './rulebase/conditional-discount.rule';
 
 @Module({
   imports: [ConfigModule],
-  providers: [CartService, CartEngineService, RuleLoader,RuleRegistry, ConfigService],
+  providers: [CartService, CartEngineService, RuleLoader,RuleRegistry, ConditionalDiscountRule, ConfigService],
   controllers: [CartController]
 })
 export class CartModule {}

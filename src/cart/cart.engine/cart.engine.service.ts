@@ -23,6 +23,14 @@ export class CartEngineService {
             totalPayable: subtotal,
         };
         const rules = this.ruleLoader.getRules();
+        for (const rule of rules) {
+            const handler = this.ruleRegistry.getRule(rule.type);
+            if (!handler) {
+                continue;
+                //throw new NotAcceptableException(`rule handler not found for type ${rule.type}`);
+            }
+            context = handler.apply(context, rule.params); 
+        }  
 
         return ({
             discountsApplied: context.totalDiscount,

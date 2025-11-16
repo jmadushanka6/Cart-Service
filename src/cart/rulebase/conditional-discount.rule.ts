@@ -18,6 +18,7 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
     }
 
     onModuleInit() { 
+        console.log(`Registering rule handler for type: ${this.type}`); 
         this.registry.registerRule(this); 
     }
 

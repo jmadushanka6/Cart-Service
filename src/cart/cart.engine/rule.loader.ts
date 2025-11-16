@@ -8,14 +8,14 @@ import * as fs from 'fs';
 @Injectable()
 export class RuleLoader implements OnModuleInit {
 
-    private readonly ruleDefenitions: RuleDefinition[] = [];
+    private ruleDefenitions: RuleDefinition[] = [];
 
     constructor(private config: ConfigService) {
         
     }
 
     async onModuleInit() {
-        await this.setRules();
+        this.ruleDefenitions = await this.setRules();
     }
 
     getRules(): RuleDefinition[] {
@@ -36,7 +36,7 @@ export class RuleLoader implements OnModuleInit {
         const filePath: string = path.join(RULES_FILE_PATH);
         const raw = await fs.promises.readFile(filePath, 'utf8'); 
         const jsonParsedRules = JSON.parse(raw);
-        
+
         if (!Array.isArray(jsonParsedRules)) {
             throw new Error('Invalid rules format in resource');
         }
