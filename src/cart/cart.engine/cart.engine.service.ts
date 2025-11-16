@@ -1,9 +1,10 @@
-import { Injectable, NotAcceptableException, OnModuleInit, ServiceUnavailableException } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { RuleLoader } from './rule.loader';
 import { RuleRegistry } from './rule.registry';
-import { CartRequest, CartResponse } from '../dto/cart.dto';
+import { CartRequest, CartResponse} from '../dto/cart.dto';
 import { EngineContext } from '../dto/engine.dto';
 import Decimal from 'decimal.js';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CartEngineService {
@@ -32,13 +33,16 @@ export class CartEngineService {
             context = handler.apply(context, rule.params); 
         }  
 
-        return ({
-            subtotal: context.subtotal,
-            discountsApplied: context.totalDiscount,
-            totalAfterDiscounts: context.totalAfterDiscounts,
-            vatAmount: context.vatAmount,
-            totalPayable: context.totalPayable,
-        });
+return plainToInstance(
+  CartResponse,
+  {
+    subtotal: context.subtotal,
+    discountsApplied: context.totalDiscount,
+    totalAfterDiscounts: context.totalAfterDiscounts,
+    vatAmount: context.vatAmount,
+    totalPayable: context.totalPayable,
+  }
+);
     }
 
 }

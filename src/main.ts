@@ -8,6 +8,7 @@ async function bootstrap() {
   // validation, middleware
   app.useGlobalPipes(
     new ValidationPipe({
+      transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
     }),

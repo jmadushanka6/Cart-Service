@@ -1,8 +1,9 @@
-import { Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import {
     IsArray, IsInt, IsNotEmpty, IsNumber,
     IsPositive, IsString, Min, ValidateNested, ArrayMinSize
 } from 'class-validator';
+import Decimal from 'decimal.js';
 
 export class CartItem {
     @IsString() @IsNotEmpty() name: string;
@@ -19,10 +20,19 @@ export class CartRequest {
     items: CartItem[];
 }
 
-export interface CartResponse {
+export class CartResponse {
+    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
     subtotal: number;
+
+    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
     discountsApplied: number;
+
+    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
     totalAfterDiscounts: number;
+
+    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
     vatAmount: number;
+
+    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
     totalPayable: number;
 }
