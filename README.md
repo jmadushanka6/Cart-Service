@@ -122,6 +122,7 @@ Future Enhancements
     Full schema validation for rules.json
     Add OR logic and more complex rule combinations
     Implement richer rule types (tiered discounts)
+    Use DB for stroing rules
 
 
 Adding New Rules
