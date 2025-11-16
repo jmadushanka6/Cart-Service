@@ -62,7 +62,7 @@ export class RuleLoader implements OnModuleInit {
 
     private async filterAndSortRules(rules: RuleDefinition[]): Promise<RuleDefinition[]> {
         // filter active rules and sort descending by priority
-        rules = rules.filter(r => r.active).sort((a, b) => b.priority - a.priority);
+        rules = rules.filter(r => r.active).sort((a, b) => a.priority - b.priority);
         return rules;
     }
 

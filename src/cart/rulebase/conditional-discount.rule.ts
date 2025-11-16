@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit, ServiceUnavailableException } from '@nestjs/c
 import { EngineContext } from '../dto/engine.dto';
 import { BaseRule } from './base.rule';
 import { RuleRegistry } from '../cart.engine/rule.registry';
+import Decimal from 'decimal.js';
 
 interface Condition {
     field: 'category' | 'name' | 'price';
@@ -17,9 +18,9 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
 
     }
 
-    onModuleInit() { 
-        console.log(`Registering rule handler for type: ${this.type}`); 
-        this.registry.registerRule(this); 
+    onModuleInit() {
+        console.log(`Registering rule handler for type: ${this.type}`);
+        this.registry.registerRule(this);
     }
 
     private matches(item: any, cond: Condition): boolean {
@@ -34,7 +35,7 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
                 // TODO: send a warning to Admin
                 console.error(`No valid discount conditions in rule engine for the type: ${this.type}`);
                 throw new ServiceUnavailableException('Service temporarily unavailable, please try later');
-            }; 
+            };
         }
     }
 
@@ -54,7 +55,10 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
             const ok = conditions.every(c => this.matches(item, c));
             if (ok) {
                 if (discountPercent) {
-                discount += item.price * item.quantity * (discountPercent / 100);
+
+                    // discount += item.price * item.quantity * (discountPercent / 100);
+                    discount = Number(Decimal(discount).plus(Decimal(item.price).times(item.quantity).times(Decimal(discountPercent).dividedBy(100))));
+
                 } else if (discountAmount) {
                     discount += discountAmount;
                 } else {
@@ -64,9 +68,12 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
                 }
             }
         }
-        ctx.totalDiscount += discount;
-        ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalDiscount;
-        ctx.totalPayable = ctx.totalAfterDiscounts ;
+        // ctx.totalDiscount += discount;
+        // ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalDiscount;
+
+        ctx.totalDiscount = Number( Decimal(ctx.totalDiscount).plus( Decimal(discount) ) );
+        ctx.totalAfterDiscounts = Number( Decimal(ctx.subtotal).minus( Decimal(ctx.totalDiscount) ) );
+        ctx.totalPayable = ctx.totalAfterDiscounts;
         return ctx;
     }
 }

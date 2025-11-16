@@ -1,8 +1,9 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotAcceptableException, OnModuleInit, ServiceUnavailableException } from '@nestjs/common';
 import { RuleLoader } from './rule.loader';
 import { RuleRegistry } from './rule.registry';
 import { CartRequest, CartResponse } from '../dto/cart.dto';
 import { EngineContext } from '../dto/engine.dto';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class CartEngineService {
@@ -12,7 +13,7 @@ export class CartEngineService {
 
     async calculateCart(cart: CartRequest): Promise<any> {
 
-        const subtotal: number = cart.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+        const subtotal:number = cart.items.reduce((sum, i) => Decimal(sum).plus(Decimal(i.price).mul(Decimal(i.quantity))).toNumber(), 0);
 
         let context: EngineContext = {
             items: cart.items,
@@ -26,8 +27,7 @@ export class CartEngineService {
         for (const rule of rules) {
             const handler = this.ruleRegistry.getRule(rule.type);
             if (!handler) {
-                continue;
-                //throw new NotAcceptableException(`rule handler not found for type ${rule.type}`);
+                throw new ServiceUnavailableException(`rule handler not found for type ${rule.type}`);
             }
             context = handler.apply(context, rule.params); 
         }  
