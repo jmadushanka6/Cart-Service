@@ -49,16 +49,16 @@ export class ConditionalDiscountRule implements BaseRule, OnModuleInit {
         for (const item of ctx.items) {
             const ok = conditions.every(c => this.matches(item, c));
             if (ok) {
-                if (discountAmount) {
+                if (discountPercent) {
                 discount += item.price * item.quantity * (discountPercent / 100);
-                } else if (discountPercent) {
+                } else if (discountAmount) {
                     discount += discountAmount;
                 } else {
                     // TODO: send a warning to Admin
                     console.error(`No valid discount action found for the type: ${this.type}`);
                     continue;
                 }
-            };
+            }
         }
         ctx.totalDiscount += discount;
         ctx.totalAfterDiscounts = ctx.subtotal - ctx.totalAfterDiscounts;
