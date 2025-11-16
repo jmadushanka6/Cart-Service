@@ -147,16 +147,14 @@ Adding New Rules
 
     Edge Cases Considered
 
-Empty items list
-
-        Missing or invalid rule parameters
+        Empty items list
+        Missing or invalid parameters
         Negative price or quantity
         Quantity must be an integer
         Category/name must be strings
         Supports multiple atomic conditions (limited testing in MVP)
         Inactive rules are ignored
-        Missing params handled safely
-        (rules.json is not validated for MVP.)
+        Missing params handled safely(rules.json is not validated for MVP.)
 
 
 ## Installation
