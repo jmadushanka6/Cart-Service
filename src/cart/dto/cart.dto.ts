@@ -21,18 +21,18 @@ export class CartRequest {
 }
 
 export class CartResponse {
-    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
+    @Transform(({ value }) =>  Number(value).toFixed(2))
     subtotal: number;
 
-    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
+    @Transform(({ value }) =>  Number(value).toFixed(2))
     discountsApplied: number;
 
-    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
+    @Transform(({ value }) =>  Number(value).toFixed(2))
     totalAfterDiscounts: number;
 
-    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
+    @Transform(({ value }) =>  Number(value).toFixed(2))
     vatAmount: number;
 
-    @Transform(({ value }) => Number(new Decimal(value).toFixed(2)))
+    @Transform(({ value }) =>  Number(value).toFixed(2))
     totalPayable: number;
 }
