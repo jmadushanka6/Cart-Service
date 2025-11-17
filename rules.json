@@ -1,6 +1,6 @@
 [
     {
-        "id": "B",
+        "id": "A",
         "type": "conditional_discount",
         "priority": 0,
         "params": {
@@ -12,13 +12,13 @@
                 }
             ],
             "action": {
-                "discountPercent": 5
+                "discountPercent": 10
             }
         },
         "active": true
     },
     {
-        "id": "C",
+        "id": "B",
         "type": "bulk_discount",
         "priority": 101,
         "params": {
@@ -28,7 +28,7 @@
         "active": true
     },
     {
-        "id": "D",
+        "id": "C",
         "type": "vat",
         "priority": 1001,
         "params": {

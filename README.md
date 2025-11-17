@@ -60,9 +60,9 @@ conditional_discount | bulk_discount | vat
 
 Priority Guide
 
-0          → dynamic conditional rules
-1–100      → item/category specific rules
-101–1000   → group rules (bulk discount)
+0          → dynamic conditional rules \n
+1–100      → item/category specific rules \n
+101–1000   → group rules (bulk discount) \n
 1001+      → tax rules (vat)
 
 

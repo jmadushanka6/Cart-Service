@@ -133,7 +133,7 @@ let hybridRules: RuleDefinition[] = [
     });
 
     expect(result.subtotal).toBe(25);
-    expect(result.discountsApplied).toBeCloseTo(0);
+    expect(result.discountsApplied).toBe(0);
     expect(result.totalAfterDiscounts).toBeCloseTo(25);
     expect(result.vatAmount).toBeCloseTo(5);
     expect(result.totalPayable).toBeCloseTo(30);
